@@ -13,7 +13,7 @@ const PageWrapper = ({ pageTitle, children }: IProps) => {
 
   return (
     <>
-      <Box py={"20"} px={"10"}>
+      <Box py={"32"} px={"10"}>
         {children}
       </Box>
       <ThemeToggle
