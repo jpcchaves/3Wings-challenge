@@ -5,12 +5,14 @@ import { BlogPostMinDto } from "../../../domain/models/blogPosts/BlogPostMinDto"
 import { ApiMessageResponse } from "../../../domain/models/common/ApiMessageResponse";
 import { ApiPaginatedResponse } from "../../../domain/models/common/ApiPaginatedResponse";
 import useLoading from "../../../hooks/loading/useLoading";
+import useNotify from "../../../hooks/useNotify/useNotify";
 import { useAppDispatch } from "../../../hooks/useRedux";
 import { loadBlogPost, loadBlogPostsPaginated } from "../../../store/blogPosts";
 import { HttpMethod, httpRequest } from "../../../utils/http";
 
 const useBlogPosts = () => {
   const { isLoading, setLoading } = useLoading();
+  const { notify } = useNotify();
   const dispatch = useAppDispatch();
   const getBlogPostList = async () => {
     setLoading(true);
@@ -22,7 +24,7 @@ const useBlogPosts = () => {
         dispatch(loadBlogPostsPaginated(res));
       })
       .catch((err) => {
-        console.log(err);
+        notify(err, "error");
       })
       .finally(() => {
         setLoading(false);
@@ -39,7 +41,7 @@ const useBlogPosts = () => {
         dispatch(loadBlogPost(res));
       })
       .catch((err) => {
-        console.log(err);
+        notify(err, "error");
       })
       .finally(() => {
         setLoading(false);
@@ -53,12 +55,12 @@ const useBlogPosts = () => {
       blogPostEndpoint,
       data
     )
-      .then((res) => {
-        console.log(res);
+      .then(({ message }) => {
+        notify(message, "success");
         getBlogPostList();
       })
       .catch((err) => {
-        console.log(err);
+        notify(err, "error");
       })
       .finally(() => {
         setLoading(false);
@@ -72,12 +74,12 @@ const useBlogPosts = () => {
       `${blogPostEndpoint}/${id}`,
       data
     )
-      .then((res) => {
-        console.log(res);
+      .then(({ message }) => {
+        notify(message, "success");
         getBlogPostList();
       })
       .catch((err) => {
-        console.log(err);
+        notify(err, "error");
       })
       .finally(() => {
         setLoading(false);
@@ -90,12 +92,12 @@ const useBlogPosts = () => {
       HttpMethod.DELETE,
       `${blogPostEndpoint}/${id}`
     )
-      .then((res) => {
-        console.log(res);
+      .then(({ message }) => {
+        notify(message, "success");
         getBlogPostList();
       })
       .catch((err) => {
-        console.log(err);
+        notify(err, "error");
       })
       .finally(() => {
         setLoading(false);
