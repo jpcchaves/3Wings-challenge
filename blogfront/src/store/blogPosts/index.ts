@@ -1,9 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { BlogPostDto } from "../../domain/models/blogPosts/BlogPostDto";
 import { BlogPostMinDto } from "../../domain/models/blogPosts/BlogPostMinDto";
 import { ApiPaginatedResponse } from "../../domain/models/common/ApiPaginatedResponse";
 
 export interface BlogPostsState {
   blogPosts: BlogPostMinDto[] | null;
+  blogPost: BlogPostDto | null;
   pageNo: number;
   totalElements: number;
   totalPages: number;
@@ -15,9 +17,11 @@ type PayloadBlogPostsPaginated = PayloadAction<
   ApiPaginatedResponse<BlogPostMinDto>
 >;
 type PayloadBlogPosts = PayloadAction<BlogPostMinDto[]>;
+type PayloadBlogPost = PayloadAction<BlogPostDto>;
 
 const initialState: BlogPostsState = {
   blogPosts: null,
+  blogPost: null,
   pageNo: 0,
   last: true,
   pageSize: 0,
@@ -45,9 +49,13 @@ export const blogPostsSlice = createSlice({
     loadBlogPosts: (state, action: PayloadBlogPosts) => {
       state.blogPosts = action.payload;
     },
+    loadBlogPost: (state, action: PayloadBlogPost) => {
+      state.blogPost = action.payload;
+    },
   },
 });
 
-export const { loadBlogPostsPaginated, loadBlogPosts } = blogPostsSlice.actions;
+export const { loadBlogPostsPaginated, loadBlogPosts, loadBlogPost } =
+  blogPostsSlice.actions;
 
 export default blogPostsSlice.reducer;
