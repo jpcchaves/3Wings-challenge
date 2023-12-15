@@ -11,6 +11,7 @@ import {
   ModalHeader,
   ModalOverlay,
   SimpleGrid,
+  Text,
   Textarea,
 } from "@chakra-ui/react";
 import { InputComponent } from "chakraui-custom-components";
@@ -49,7 +50,7 @@ const BlogPostModalForm = ({ isOpen, onClose, validation }: IProps) => {
                 onChange={validation.handleChange}
                 inputErrorMessage={validation.errors.title}
                 isInvalid={
-                  !!(validation.errors.title && validation.errors.title)
+                  !!(validation.errors.title && validation.touched.title)
                 }
               />
               <FormControl isRequired>
@@ -60,10 +61,17 @@ const BlogPostModalForm = ({ isOpen, onClose, validation }: IProps) => {
                   onChange={validation.handleChange}
                   onBlur={validation.handleBlur}
                   isInvalid={
-                    !!(validation.errors.content && validation.errors.content)
+                    !!(validation.errors.content && validation.touched.content)
                   }
                   height={200}
                 />
+                {!!(
+                  validation.errors.content && validation.touched.content
+                ) && (
+                  <Text color={"red.500"} mt={2} fontSize={"12"}>
+                    {validation.errors.content}
+                  </Text>
+                )}
               </FormControl>
             </SimpleGrid>
           </ModalBody>
