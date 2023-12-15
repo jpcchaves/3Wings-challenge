@@ -1,5 +1,6 @@
 package com.blogapi.blogapi.exception.handler;
 
+import com.blogapi.blogapi.exception.BadRequestException;
 import com.blogapi.blogapi.exception.ResourceNotFoundException;
 import com.blogapi.blogapi.exception.model.ExceptionResponse;
 import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
@@ -43,6 +44,16 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
                 request.getDescription(false));
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public final ResponseEntity<ExceptionResponse> handleBadRequestException(
+            BadRequestException ex,
+            WebRequest request) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
+                request.getDescription(false));
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
