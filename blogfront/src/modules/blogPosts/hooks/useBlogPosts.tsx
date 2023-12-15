@@ -23,11 +23,15 @@ interface IUseBlogPosts {
 interface IProps {
   validation: FormikValues;
   toggleModalVisibility: () => void;
+  toggleDeleteModal: () => void;
+  setSelectedBlogPostId: (prevState: string) => void;
 }
 
 const useBlogPosts = ({
   validation,
   toggleModalVisibility,
+  setSelectedBlogPostId,
+  toggleDeleteModal,
 }: IProps): IUseBlogPosts => {
   const { isLoading, setLoading } = useLoading();
   const { notify } = useNotify();
@@ -123,6 +127,8 @@ const useBlogPosts = ({
       .then(({ message }) => {
         notify(message, "success");
         getBlogPostList();
+        setSelectedBlogPostId(null!);
+        toggleDeleteModal();
       })
       .catch((err) => {
         notify(err, "error");

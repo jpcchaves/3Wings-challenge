@@ -16,6 +16,8 @@ import {
 } from "@chakra-ui/react";
 import { InputComponent } from "chakraui-custom-components";
 import { FormikValues } from "formik";
+import { useAppDispatch } from "../../../../hooks/useRedux";
+import { clearBlogPost } from "../../../../store/blogPosts";
 
 interface IProps {
   isOpen: boolean;
@@ -24,6 +26,8 @@ interface IProps {
 }
 
 const BlogPostModalForm = ({ isOpen, onClose, validation }: IProps) => {
+  const dispatch = useAppDispatch();
+
   return (
     <Modal size={"xl"} isOpen={isOpen} onClose={onClose}>
       <form
@@ -65,7 +69,7 @@ const BlogPostModalForm = ({ isOpen, onClose, validation }: IProps) => {
                 {!!(
                   validation.errors.content && validation.touched.content
                 ) && (
-                  <Text color={"red.500"} mt={2} fontSize={"12"}>
+                  <Text color={"red.300"} mt={2} fontSize={"14"}>
                     {validation.errors.content}
                   </Text>
                 )}
@@ -74,7 +78,13 @@ const BlogPostModalForm = ({ isOpen, onClose, validation }: IProps) => {
           </ModalBody>
           <ModalFooter>
             <ButtonGroup spacing={2}>
-              <Button onClick={onClose} colorScheme="red">
+              <Button
+                onClick={() => {
+                  onClose();
+                  dispatch(clearBlogPost());
+                }}
+                colorScheme="red"
+              >
                 Close
               </Button>
               <Button type="submit" colorScheme="blue">

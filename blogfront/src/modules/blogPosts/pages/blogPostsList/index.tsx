@@ -1,4 +1,4 @@
-import { AddIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { AddIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -8,30 +8,34 @@ import {
   CardHeader,
   Flex,
   Heading,
-  IconButton,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   SimpleGrid,
   Text,
 } from "@chakra-ui/react";
 import { FloatButton } from "chakraui-custom-components";
 import { useFormik } from "formik";
-import { useEffect } from "react";
-import { BsThreeDotsVertical } from "react-icons/bs";
+import { useEffect, useState } from "react";
+import DeleteModal from "../../../../components/modalDelete";
 import PageWrapper from "../../../../components/pageWrapper";
 import useModalControls from "../../../../hooks/modalControls/useModalControls";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/useRedux";
 import { clearBlogPost } from "../../../../store/blogPosts";
 import BlogPostModalForm from "../../components/blogPostModalForm";
+import CardMenu from "../../components/cardMenu";
 import useBlogPosts from "../../hooks/useBlogPosts";
 import { blogPostValidationSchema } from "../../utils/validation/blogPostValidationSchema";
 
 const BlogPostsList = () => {
+  const [selectedBlogPostId, setSelectedBlogPostId] = useState<string | null>(
+    null
+  );
+  const [isModalDeleteOpen, setIsModalDeleteOpen] = useState<boolean>(false);
   const { blogPost, blogPosts } = useAppSelector((state) => state.blogPosts);
   const { isModalOpen, toggleModalVisibility } = useModalControls();
   const dispatch = useAppDispatch();
+
+  const toggleDeleteModal = () => {
+    setIsModalDeleteOpen((prevState) => !prevState);
+  };
 
   const validation = useFormik({
     enableReinitialize: true,
@@ -49,11 +53,19 @@ const BlogPostsList = () => {
     },
   });
 
-  const { getBlogPostList, createBlogPost, updateBlogPost, getBlogPostById } =
-    useBlogPosts({
-      validation,
-      toggleModalVisibility,
-    });
+  const {
+    getBlogPostList,
+    createBlogPost,
+    updateBlogPost,
+    getBlogPostById,
+    deleteBlogPost,
+    isLoading,
+  } = useBlogPosts({
+    validation,
+    toggleModalVisibility,
+    setSelectedBlogPostId,
+    toggleDeleteModal,
+  });
 
   useEffect(() => {
     getBlogPostList();
@@ -78,23 +90,12 @@ const BlogPostsList = () => {
                       <Heading size={"md"}>{title}</Heading>
                     </Box>
                   </Flex>
-                  <Menu placement="right-start" preventOverflow>
-                    <MenuButton
-                      as={IconButton}
-                      aria-label="Options"
-                      icon={<BsThreeDotsVertical />}
-                      variant="link"
-                    />
-                    <MenuList>
-                      <MenuItem
-                        icon={<EditIcon />}
-                        onClick={() => getBlogPostById(id)}
-                      >
-                        Edit
-                      </MenuItem>
-                      <MenuItem icon={<DeleteIcon />}>Delete</MenuItem>
-                    </MenuList>
-                  </Menu>
+                  <CardMenu
+                    id={id}
+                    getBlogPostById={getBlogPostById}
+                    toggleModalVisibility={toggleDeleteModal}
+                    setSelectedBlogPostId={setSelectedBlogPostId}
+                  />
                 </Flex>
               </CardHeader>
 
@@ -114,6 +115,14 @@ const BlogPostsList = () => {
             </Card>
           ))}
         </SimpleGrid>
+
+        <DeleteModal
+          selectedBlogPostId={selectedBlogPostId!}
+          handleDelete={deleteBlogPost}
+          isLoading={isLoading}
+          isModalOpen={isModalDeleteOpen}
+          toggleModalVisibility={toggleDeleteModal}
+        />
 
         <BlogPostModalForm
           isOpen={isModalOpen}
