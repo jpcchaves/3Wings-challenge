@@ -67,9 +67,15 @@ const BlogPostsList = () => {
             <Card key={`${title}-${idx}-${id}`}>
               <CardHeader>
                 <Flex>
-                  <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
+                  <Flex
+                    isTruncated
+                    flex="1"
+                    gap="4"
+                    alignItems="center"
+                    flexWrap="wrap"
+                  >
                     <Box>
-                      <Heading>{title}</Heading>
+                      <Heading size={"md"}>{title}</Heading>
                     </Box>
                   </Flex>
                   <Menu placement="right-start" preventOverflow>
