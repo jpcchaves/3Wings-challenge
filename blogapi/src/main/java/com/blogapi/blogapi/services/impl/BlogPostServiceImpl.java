@@ -6,6 +6,7 @@ import com.blogapi.blogapi.data.dto.blogPost.BlogPostMinDto;
 import com.blogapi.blogapi.data.dto.common.ApiMessageResponse;
 import com.blogapi.blogapi.data.dto.common.ApiPaginatedResponse;
 import com.blogapi.blogapi.domain.entities.BlogPost;
+import com.blogapi.blogapi.exception.BadRequestException;
 import com.blogapi.blogapi.exception.ResourceNotFoundException;
 import com.blogapi.blogapi.factory.blogPost.BlogPostFactory;
 import com.blogapi.blogapi.repositories.BlogPostRepository;
@@ -39,6 +40,8 @@ public class BlogPostServiceImpl implements BlogPostService {
 
     @Override
     public ApiMessageResponse createBlogPost(BlogPostCreateRequestDto requestDto) {
+        verifyTitleAvaiability(requestDto.getTitle());
+
         BlogPost blogPost = blogPostFactory.createBlogPost(requestDto);
         blogPostRepository.save(blogPost);
         return new ApiMessageResponse("Post created successfully!");
@@ -48,6 +51,7 @@ public class BlogPostServiceImpl implements BlogPostService {
     public ApiMessageResponse updateBlogPost(
             BlogPostCreateRequestDto requestDto,
             Long id) {
+        verifyTitleAvaiability(requestDto.getTitle());
         BlogPost blogPost = fetchBlogPostById(id);
         blogPost.setTitle(requestDto.getTitle());
         blogPost.setContent(requestDto.getContent());
@@ -84,5 +88,15 @@ public class BlogPostServiceImpl implements BlogPostService {
         return blogPostRepository
                 .findBlogPostById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Blog post not found with the given id!"));
+    }
+
+    private void verifyTitleAvaiability(String title) {
+        if(existsByTitle(title)) {
+            throw new BadRequestException("A post with the given title already exists");
+        }
+    }
+
+    private Boolean existsByTitle (String title) {
+        return blogPostRepository.existsByTitle(title);
     }
 }

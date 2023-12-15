@@ -18,4 +18,7 @@ public interface BlogPostRepository extends JpaRepository<BlogPost, Long> {
 
     @Query("SELECT bp FROM BlogPost bp WHERE bp.id = :id AND bp.isDeleted = false")
     Optional<BlogPost> findBlogPostById(@Param("id") Long id);
+
+    @Query("SELECT CASE WHEN COUNT(bp) > 0 THEN true ELSE false END FROM BlogPost bp WHERE LOWER(bp.title) = LOWER(:title) AND bp.isDeleted = false")
+    boolean existsByTitle(@Param("title") String title);
 }
