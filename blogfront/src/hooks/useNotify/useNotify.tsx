@@ -19,6 +19,7 @@ const useNotify = () => {
       title,
       status,
       duration: 3000,
+      position: "top-right",
       ...options,
     });
   };
