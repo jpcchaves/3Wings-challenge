@@ -23,9 +23,15 @@ interface IProps {
   isOpen: boolean;
   onClose: () => void;
   validation: FormikValues;
+  isLoading: boolean;
 }
 
-const BlogPostModalForm = ({ isOpen, onClose, validation }: IProps) => {
+const BlogPostModalForm = ({
+  isOpen,
+  onClose,
+  validation,
+  isLoading,
+}: IProps) => {
   const dispatch = useAppDispatch();
 
   return (
@@ -84,10 +90,11 @@ const BlogPostModalForm = ({ isOpen, onClose, validation }: IProps) => {
                   dispatch(clearBlogPost());
                 }}
                 colorScheme="red"
+                isLoading={isLoading}
               >
                 Close
               </Button>
-              <Button type="submit" colorScheme="blue">
+              <Button type="submit" colorScheme="blue" isLoading={isLoading}>
                 Submit
               </Button>
             </ButtonGroup>

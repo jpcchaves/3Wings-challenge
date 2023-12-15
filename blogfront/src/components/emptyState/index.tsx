@@ -12,6 +12,7 @@ const EmptyState = ({ toggleModalVisibility }: IProps) => {
       spacing={2}
       p={16}
       borderRadius={8}
+      textAlign={"center"}
     >
       <Heading size="lg">You haven’t added any blog posts.</Heading>
       <Text>Welcome 👋🏼 Let’s get started.</Text>
