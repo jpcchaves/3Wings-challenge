@@ -45,6 +45,7 @@ export const blogPostsSlice = createSlice({
       state.pageSize = pageSize;
       state.totalPages = totalPages;
       state.totalElements = totalElements;
+      state.blogPost = null;
     },
     loadBlogPosts: (state, action: PayloadBlogPosts) => {
       state.blogPosts = action.payload;
@@ -52,10 +53,17 @@ export const blogPostsSlice = createSlice({
     loadBlogPost: (state, action: PayloadBlogPost) => {
       state.blogPost = action.payload;
     },
+    clearBlogPost: (state) => {
+      state.blogPost = null;
+    },
   },
 });
 
-export const { loadBlogPostsPaginated, loadBlogPosts, loadBlogPost } =
-  blogPostsSlice.actions;
+export const {
+  loadBlogPostsPaginated,
+  loadBlogPosts,
+  loadBlogPost,
+  clearBlogPost,
+} = blogPostsSlice.actions;
 
 export default blogPostsSlice.reducer;

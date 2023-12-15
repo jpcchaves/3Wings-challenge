@@ -32,10 +32,7 @@ const BlogPostModalForm = ({ isOpen, onClose, validation }: IProps) => {
           validation.handleSubmit(e);
         }}
       >
-        <ModalOverlay
-          bg="blackAlpha.300"
-          backdropFilter="blur(10px) hue-rotate(90deg)"
-        />
+        <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px)" />
         <ModalContent>
           <ModalHeader>Blog Post</ModalHeader>
           <ModalCloseButton />

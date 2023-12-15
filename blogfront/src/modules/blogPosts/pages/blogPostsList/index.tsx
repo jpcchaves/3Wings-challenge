@@ -22,7 +22,8 @@ import { useEffect } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import PageWrapper from "../../../../components/pageWrapper";
 import useModalControls from "../../../../hooks/modalControls/useModalControls";
-import { useAppSelector } from "../../../../hooks/useRedux";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/useRedux";
+import { clearBlogPost } from "../../../../store/blogPosts";
 import BlogPostModalForm from "../../components/blogPostModalForm";
 import useBlogPosts from "../../hooks/useBlogPosts";
 import { blogPostValidationSchema } from "../../utils/validation/blogPostValidationSchema";
@@ -30,6 +31,7 @@ import { blogPostValidationSchema } from "../../utils/validation/blogPostValidat
 const BlogPostsList = () => {
   const { blogPost, blogPosts } = useAppSelector((state) => state.blogPosts);
   const { isModalOpen, toggleModalVisibility } = useModalControls();
+  const dispatch = useAppDispatch();
 
   const validation = useFormik({
     enableReinitialize: true,
@@ -47,10 +49,11 @@ const BlogPostsList = () => {
     },
   });
 
-  const { getBlogPostList, createBlogPost, updateBlogPost } = useBlogPosts({
-    validation,
-    toggleModalVisibility,
-  });
+  const { getBlogPostList, createBlogPost, updateBlogPost, getBlogPostById } =
+    useBlogPosts({
+      validation,
+      toggleModalVisibility,
+    });
 
   useEffect(() => {
     getBlogPostList();
@@ -60,8 +63,8 @@ const BlogPostsList = () => {
     <PageWrapper pageTitle="Blog Posts">
       <Box>
         <SimpleGrid columns={{ sm: 1, md: 3 }} gap={5}>
-          {(blogPosts || []).map(({ title, content }, idx) => (
-            <Card key={`${title}-${idx}`}>
+          {(blogPosts || []).map(({ id, title, content }, idx) => (
+            <Card key={`${title}-${idx}-${id}`}>
               <CardHeader>
                 <Flex>
                   <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
@@ -77,7 +80,12 @@ const BlogPostsList = () => {
                       variant="link"
                     />
                     <MenuList>
-                      <MenuItem icon={<EditIcon />}>Edit</MenuItem>
+                      <MenuItem
+                        icon={<EditIcon />}
+                        onClick={() => getBlogPostById(id)}
+                      >
+                        Edit
+                      </MenuItem>
                       <MenuItem icon={<DeleteIcon />}>Delete</MenuItem>
                     </MenuList>
                   </Menu>
@@ -107,7 +115,10 @@ const BlogPostsList = () => {
           validation={validation}
         />
         <FloatButton
-          onClick={toggleModalVisibility}
+          onClick={() => {
+            toggleModalVisibility();
+            dispatch(clearBlogPost());
+          }}
           rounded={"full"}
           colorScheme={"blue"}
           icon={<AddIcon />}

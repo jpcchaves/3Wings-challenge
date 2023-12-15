@@ -62,6 +62,7 @@ const useBlogPosts = ({
     )
       .then((res) => {
         dispatch(loadBlogPost(res));
+        toggleModalVisibility();
       })
       .catch((err) => {
         notify(err, "error");
