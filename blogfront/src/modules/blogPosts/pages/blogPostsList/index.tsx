@@ -131,7 +131,7 @@ const BlogPostsList = () => {
                     });
                   }}
                 >
-                  Ver Detalhes
+                  See Details
                 </Button>
               </CardFooter>
             </Card>

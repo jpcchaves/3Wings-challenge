@@ -21,7 +21,7 @@ export const httpRequest = async <Req, Res>(
       .catch((error: PromiseError) => {
         reject(
           error?.response?.data?.message ||
-            "Ocorreu um erro inesperado. Por favor, tente novamente"
+            "An unexpected error occurred. Please, try again."
         );
       });
   });
