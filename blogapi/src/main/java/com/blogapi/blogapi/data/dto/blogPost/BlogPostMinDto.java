@@ -1,6 +1,7 @@
 package com.blogapi.blogapi.data.dto.blogPost;
 
 public class BlogPostMinDto {
+    private Long id;
     private String title;
     private String content;
 
@@ -8,10 +9,20 @@ public class BlogPostMinDto {
     }
 
     public BlogPostMinDto(
+            Long id,
             String title,
             String content) {
+        this.id = id;
         this.title = title;
         this.content = content;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {
