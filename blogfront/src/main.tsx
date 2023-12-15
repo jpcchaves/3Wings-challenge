@@ -5,15 +5,16 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App.tsx";
 import { store } from "./store/index.ts";
+import theme from "./theme/theme.ts";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <Provider store={store}>
-      <ChakraProvider>
-        <BrowserRouter>
+    <BrowserRouter>
+      <Provider store={store}>
+        <ChakraProvider theme={theme}>
           <App />
-        </BrowserRouter>
-      </ChakraProvider>
-    </Provider>
+        </ChakraProvider>
+      </Provider>
+    </BrowserRouter>
   </React.StrictMode>
 );
