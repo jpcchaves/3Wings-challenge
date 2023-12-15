@@ -14,6 +14,7 @@ import {
 import { FloatButton } from "chakraui-custom-components";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
+import EmptyState from "../../../../components/emptyState";
 import DeleteModal from "../../../../components/modalDelete";
 import PageWrapper from "../../../../components/pageWrapper";
 import useModalControls from "../../../../hooks/modalControls/useModalControls";
@@ -74,46 +75,50 @@ const BlogPostsList = () => {
   return (
     <PageWrapper pageTitle="Blog Posts">
       <Box>
-        <SimpleGrid columns={{ sm: 1, md: 3 }} gap={5}>
-          {(blogPosts || []).map(({ id, title, content }, idx) => (
-            <Card key={`${title}-${idx}-${id}`}>
-              <CardHeader>
-                <Flex>
-                  <Flex
-                    isTruncated
-                    flex="1"
-                    gap="4"
-                    alignItems="center"
-                    flexWrap="wrap"
-                  >
-                    <Box>
-                      <Heading size={"md"}>{title}</Heading>
-                    </Box>
+        <SimpleGrid columns={{ sm: 1, md: 3, xl: 4 }} gap={5}>
+          {blogPosts && !blogPosts.length ? (
+            <EmptyState toggleModalVisibility={toggleModalVisibility} />
+          ) : (
+            (blogPosts || []).map(({ id, title, content }, idx) => (
+              <Card key={`${title}-${idx}-${id}`}>
+                <CardHeader>
+                  <Flex>
+                    <Flex
+                      isTruncated
+                      flex="1"
+                      gap="4"
+                      alignItems="center"
+                      flexWrap="wrap"
+                    >
+                      <Box>
+                        <Heading size={"md"}>{title}</Heading>
+                      </Box>
+                    </Flex>
+                    <CardMenu
+                      id={id}
+                      getBlogPostById={getBlogPostById}
+                      toggleModalVisibility={toggleDeleteModal}
+                      setSelectedBlogPostId={setSelectedBlogPostId}
+                    />
                   </Flex>
-                  <CardMenu
-                    id={id}
-                    getBlogPostById={getBlogPostById}
-                    toggleModalVisibility={toggleDeleteModal}
-                    setSelectedBlogPostId={setSelectedBlogPostId}
-                  />
-                </Flex>
-              </CardHeader>
+                </CardHeader>
 
-              <CardBody>
-                <Box>
-                  <Text pt="2" fontSize="sm">
-                    {content}
-                  </Text>
-                </Box>
-              </CardBody>
+                <CardBody>
+                  <Box>
+                    <Text pt="2" fontSize="sm">
+                      {content}
+                    </Text>
+                  </Box>
+                </CardBody>
 
-              <CardFooter>
-                <Button w={"full"} colorScheme="blue">
-                  Ver Detalhes
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
+                <CardFooter>
+                  <Button w={"full"} colorScheme="blue">
+                    Ver Detalhes
+                  </Button>
+                </CardFooter>
+              </Card>
+            ))
+          )}
         </SimpleGrid>
 
         <DeleteModal
