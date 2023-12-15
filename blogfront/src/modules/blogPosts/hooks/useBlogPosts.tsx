@@ -1,3 +1,4 @@
+import { FormikValues } from "formik";
 import { blogPostEndpoint } from "../../../constants/env";
 import { BlogPostCreateRequestDto } from "../../../domain/models/blogPosts/BlogPostCreateRequestDto";
 import { BlogPostDto } from "../../../domain/models/blogPosts/BlogPostDto";
@@ -10,10 +11,32 @@ import { useAppDispatch } from "../../../hooks/useRedux";
 import { loadBlogPost, loadBlogPostsPaginated } from "../../../store/blogPosts";
 import { HttpMethod, httpRequest } from "../../../utils/http";
 
-const useBlogPosts = () => {
+interface IUseBlogPosts {
+  getBlogPostList: () => Promise<void>;
+  getBlogPostById: (id: string) => Promise<void>;
+  createBlogPost: (data: BlogPostCreateRequestDto) => Promise<void>;
+  updateBlogPost: (data: BlogPostCreateRequestDto, id: string) => Promise<void>;
+  deleteBlogPost: (id: string) => Promise<void>;
+  isLoading: boolean;
+}
+
+interface IProps {
+  validation: FormikValues;
+  toggleModalVisibility: () => void;
+}
+
+const useBlogPosts = ({
+  validation,
+  toggleModalVisibility,
+}: IProps): IUseBlogPosts => {
   const { isLoading, setLoading } = useLoading();
   const { notify } = useNotify();
   const dispatch = useAppDispatch();
+
+  const clearForm = () => {
+    validation.resetForm();
+  };
+
   const getBlogPostList = async () => {
     setLoading(true);
     await httpRequest<void, ApiPaginatedResponse<BlogPostMinDto>>(
@@ -56,8 +79,10 @@ const useBlogPosts = () => {
       data
     )
       .then(({ message }) => {
+        clearForm();
         notify(message, "success");
         getBlogPostList();
+        toggleModalVisibility();
       })
       .catch((err) => {
         notify(err, "error");
@@ -75,8 +100,10 @@ const useBlogPosts = () => {
       data
     )
       .then(({ message }) => {
+        clearForm();
         notify(message, "success");
         getBlogPostList();
+        toggleModalVisibility();
       })
       .catch((err) => {
         notify(err, "error");
