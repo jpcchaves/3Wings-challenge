@@ -22,21 +22,29 @@ import { useAppDispatch, useAppSelector } from "../../../../hooks/useRedux";
 import { clearBlogPost } from "../../../../store/blogPosts";
 import BlogPostModalForm from "../../components/blogPostModalForm";
 import CardMenu from "../../components/cardMenu";
+import PostDetailsModal from "../../components/postDetails";
 import useBlogPosts from "../../hooks/useBlogPosts";
 import { blogPostValidationSchema } from "../../utils/validation/blogPostValidationSchema";
+import { BlogPostMinDto } from "../../../../domain/models/blogPosts/BlogPostMinDto";
 
 const BlogPostsList = () => {
   const [selectedBlogPostId, setSelectedBlogPostId] = useState<string | null>(
     null
   );
-  const [isModalDeleteOpen, setIsModalDeleteOpen] = useState<boolean>(false);
+  const [selectedBlogPostDetails, setSelectedBlogPostDetails] =
+    useState<BlogPostMinDto | null>(null);
+
   const { blogPost, blogPosts } = useAppSelector((state) => state.blogPosts);
   const { isModalOpen, toggleModalVisibility } = useModalControls();
+  const {
+    isModalOpen: isModalDeleteOpen,
+    toggleModalVisibility: toggleDeleteModal,
+  } = useModalControls();
+  const {
+    isModalOpen: isDetailsModalOpen,
+    toggleModalVisibility: toggleDetailsModal,
+  } = useModalControls();
   const dispatch = useAppDispatch();
-
-  const toggleDeleteModal = () => {
-    setIsModalDeleteOpen((prevState) => !prevState);
-  };
 
   const validation = useFormik({
     enableReinitialize: true,
@@ -109,7 +117,20 @@ const BlogPostsList = () => {
               </CardBody>
 
               <CardFooter>
-                <Button w={"full"} colorScheme="blue">
+                <Button
+                  w={"full"}
+                  colorScheme="blue"
+                  onClick={() => {
+                    toggleDetailsModal();
+                    setSelectedBlogPostDetails(() => {
+                      return {
+                        id,
+                        title,
+                        content,
+                      };
+                    });
+                  }}
+                >
                   Ver Detalhes
                 </Button>
               </CardFooter>
@@ -127,6 +148,12 @@ const BlogPostsList = () => {
           isLoading={isLoading}
           isModalOpen={isModalDeleteOpen}
           toggleModalVisibility={toggleDeleteModal}
+        />
+
+        <PostDetailsModal
+          isDetailsModalOpen={isDetailsModalOpen}
+          toggleDetailsModal={toggleDetailsModal}
+          selectedBlogPostDetails={selectedBlogPostDetails}
         />
 
         <BlogPostModalForm
