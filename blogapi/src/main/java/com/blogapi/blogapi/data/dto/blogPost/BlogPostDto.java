@@ -5,7 +5,7 @@ import java.util.Date;
 public class BlogPostDto {
     private Long id;
     private String title;
-    private String description;
+    private String content;
     private Date createdAt;
     private Date updatedAt;
     private Date deletedAt;
@@ -17,14 +17,14 @@ public class BlogPostDto {
     public BlogPostDto(
             Long id,
             String title,
-            String description,
+            String content,
             Date createdAt,
             Date updatedAt,
             Date deletedAt,
             Boolean isDeleted) {
         this.id = id;
         this.title = title;
-        this.description = description;
+        this.content = content;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
@@ -47,12 +47,12 @@ public class BlogPostDto {
         this.title = title;
     }
 
-    public String getDescription() {
-        return description;
+    public String getContent() {
+        return content;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public Date getCreatedAt() {
