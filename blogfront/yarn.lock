@@ -1686,10 +1686,10 @@ callsites@^3.0.0:
   resolved "https://registry.yarnpkg.com/callsites/-/callsites-3.1.0.tgz#b3630abd8943432f54b3f0519238e33cd7df2f73"
   integrity sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ==
 
-chakraui-custom-components@^0.1.23:
-  version "0.1.23"
-  resolved "https://registry.yarnpkg.com/chakraui-custom-components/-/chakraui-custom-components-0.1.23.tgz#2e1db8901165a59e30735455d301050780b0cb31"
-  integrity sha512-b9X5a5gzPDlk781jSO9FY8MgugCxgjOAO/wsxhee45GuI92bf9WmoeaJnrGHSKSI1//UA34oOb0faV9+j/zurQ==
+chakraui-custom-components@^0.1.24:
+  version "0.1.24"
+  resolved "https://registry.yarnpkg.com/chakraui-custom-components/-/chakraui-custom-components-0.1.24.tgz#83e4d41031af2a1ce6be62b388c11c7293efe323"
+  integrity sha512-Cyr4BX/EbXfABq9K6HmqJMZUhakhjW9GSXW4k6fg2yrZp6zCYATSDvUqS9ZbEvpqx3NO0VCU0300b16ASducvg==
   dependencies:
     "@chakra-ui/icons" "^2.1.1"
     "@chakra-ui/react" "^2.8.2"
