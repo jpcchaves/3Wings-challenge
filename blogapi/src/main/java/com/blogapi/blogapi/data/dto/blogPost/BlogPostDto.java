@@ -9,6 +9,7 @@ public class BlogPostDto {
     private Date createdAt;
     private Date updatedAt;
     private Date deletedAt;
+    private Boolean isDeleted;
 
     public BlogPostDto() {
     }
@@ -19,13 +20,15 @@ public class BlogPostDto {
             String description,
             Date createdAt,
             Date updatedAt,
-            Date deletedAt) {
+            Date deletedAt,
+            Boolean isDeleted) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
+        this.isDeleted = isDeleted;
     }
 
     public Long getId() {
@@ -74,5 +77,13 @@ public class BlogPostDto {
 
     public void setDeletedAt(Date deletedAt) {
         this.deletedAt = deletedAt;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
 }

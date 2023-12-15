@@ -14,14 +14,16 @@ public class BlogPost {
     private Long id;
     @Column(nullable = false, length = 50, unique = true)
     private String title;
-    @Column(nullable = false)
-    private String description;
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String content;
+
 
     @CreationTimestamp
     private Date createdAt;
     @UpdateTimestamp
     private Date updatedAt;
     private Date deletedAt;
+    private boolean isDeleted;
 
     public BlogPost() {
     }
@@ -29,16 +31,18 @@ public class BlogPost {
     public BlogPost(
             Long id,
             String title,
-            String description,
+            String content,
             Date createdAt,
             Date updatedAt,
-            Date deletedAt) {
+            Date deletedAt,
+            boolean isDeleted) {
         this.id = id;
         this.title = title;
-        this.description = description;
+        this.content = content;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
+        this.isDeleted = isDeleted;
     }
 
     public Long getId() {
@@ -57,12 +61,12 @@ public class BlogPost {
         this.title = title;
     }
 
-    public String getDescription() {
-        return description;
+    public String getContent() {
+        return content;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public Date getCreatedAt() {
@@ -87,5 +91,13 @@ public class BlogPost {
 
     public void setDeletedAt(Date deletedAt) {
         this.deletedAt = deletedAt;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 }
